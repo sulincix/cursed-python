@@ -6,10 +6,10 @@ OBJS = $(SRCS:.c=.o)
 build: main
 
 main: $(OBJS)
-  import subprocess ; subprocess.run(["gcc", "-o", "main"] + "$(OBJS)".split(" "))
+	import subprocess ; subprocess.run(["gcc", "-o", "main"] + "$(OBJS)".split(" "))
 
 clean:
-  import os; [os.remove(file) for file in "$(OBJS)".split(" ")]
+	import os; [os.remove(file) for file in "$(OBJS)".split(" ") + ["main"]]
 
 %.o: %.c
-  import subprocess ; subprocess.run(["gcc", "-c", "$<", "-o", "$@"])
+	import subprocess ; subprocess.run(["gcc", "-c", "$<", "-o", "$@"])
