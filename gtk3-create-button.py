@@ -4,7 +4,10 @@ gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
 def create(type, signals=[], *args, **kwargs):
-    obj = type(*args, **kwargs)
+    if callable(type):
+        obj = type(*args, **kwargs)
+    else:
+	    obj = type
     def create_wrapper(sig, function):
         def wrapper(*args, **kwargs):
             return function(sig, *args, **kwargs)
@@ -21,6 +24,16 @@ w = Gtk.Window()
 def test(signal, widget):
     print(signal, widget, 123)
 
-w.add(test)
+but = Gtk.Button(label="test2")
+
+@create(but, ["clicked", "pressed", "released"])
+def test2(signal, widget):
+    print(signal, widget, 456)
+
+b = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+print(test2)
+b.pack_start(test, False, False, 0)
+b.pack_start(but, False, False, 0)
+w.add(b)
 w.show_all()
 Gtk.main()
